@@ -1,0 +1,80 @@
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+
+public class ServicePrices {
+    public HashMap<String, Integer> hatchbackPrices = new HashMap<String, Integer>();
+    public HashMap<String, Integer> sedanPrices = new HashMap<String, Integer>();
+    public HashMap<String, Integer> suvPrices = new HashMap<String, Integer>();
+
+    ServicePrices() {
+        hatchbackPrices.put("BS01", 2000);
+        hatchbackPrices.put("EF01", 5000);
+        hatchbackPrices.put("CF01", 2000);
+        hatchbackPrices.put("GF01", 13000);
+        hatchbackPrices.put("BF01", 1000);
+
+        sedanPrices.put("BS01", 4000);
+        sedanPrices.put("EF01", 8000);
+        sedanPrices.put("CF01", 4000);
+        sedanPrices.put("GF01", 6000);
+        sedanPrices.put("BF01", 1500);
+
+        suvPrices.put("BS01", 5000);
+        suvPrices.put("EF01", 10000);
+        suvPrices.put("CF01", 6000);
+        suvPrices.put("GF01", 8000);
+        suvPrices.put("BF01", 2500);
+    }
+
+    public static HashMap<String, String> serviceNames = new HashMap<String, String>() {{
+        put("BS01", "Basic Servicing");
+        put("EF01", "Engine Fixing");
+        put("CF01", "Clutch Fixing");
+        put("GF01", "Gear Fixing");
+        put("BF01", "Brake Fixing");
+    }};
+
+    public static int calculateBill(String carType, List<String> serviceCodes, ServicePrices prices) {
+        
+        int totalbill =0;
+        HashMap<String, Integer> carPrices = new HashMap<String, Integer>();
+        if (carType.equals("Hatchback")) {
+            carPrices = prices.hatchbackPrices;
+        } else if (carType.equals("Sedan")) {
+            carPrices = prices.sedanPrices;
+        } else if (carType.equals("SUV")) {
+            carPrices = prices.suvPrices;
+        }
+        for (String code : serviceCodes) {
+            int serviceBill =0;
+            serviceBill = carPrices.get(code);
+            System.out.println(serviceNames.get(code) + "- Rs " + serviceBill);
+            totalbill += serviceBill;
+
+        }
+
+        return totalbill;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the type of car: ");
+        String carType = sc.nextLine();
+        System.out.print("Enter service codes: ");
+        List<String> serviceCodes = new ArrayList<String>();
+        for (String code : sc.nextLine().split(", ")) {
+            serviceCodes.add(code);
+        }
+        ServicePrices prices = new ServicePrices();
+        int totalBill = calculateBill(carType, serviceCodes, prices);
+        if(totalBill>10000){
+            System.out.println("Total Bill is Above 10000 hence a Complimentary Washing is Provided");
+            System.out.println("Total Bill- Rs " + totalBill);
+        }else{
+            System.out.println("Total Bill- Rs " + totalBill);
+        }
+       
+    }
+}
